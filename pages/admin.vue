@@ -10,7 +10,6 @@
 			:id="null"
 			@submit="onAddComplete"
 		/>
-		<hr>
 		<button
 			type="submit"
 			class="button is-primary"

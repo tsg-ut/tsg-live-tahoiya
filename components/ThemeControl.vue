@@ -1,5 +1,5 @@
 <template>
-	<form @submit="onSubmit">
+	<form class="ThemeControl" @submit="onSubmit">
 		<div class="field">
 			<label class="label">単語</label>
 			<div class="control">
@@ -52,7 +52,7 @@
 			<div class="content">
 				<ul>
 					<li v-for="dummy in meanings" :key="dummy.id">
-						{{dummy.isAccepted ? '✔' : ''}}
+						<span class="has-text-success">{{dummy.isAccepted ? '✔' : ''}}</span>
 						{{dummy.text}} ({{dummy.username}})
 						<button
 							type="button"
@@ -61,6 +61,7 @@
 								'is-loading': isSubmitting,
 							}"
 							:disabled="isSubmitting"
+							@click="onToggleAcceptDummy(dummy, $event)"
 						>
 							{{dummy.isAccepted ? '不採用' : '採用'}}
 						</button>
@@ -81,15 +82,23 @@
 				<div class="field-body">
 					<div class="field">
 						<p class="control is-expanded">
-							<input class="input" type="text" placeholder="意味">
+							<input
+								v-model="dummyText"
+								class="input"
+								type="text"
+								placeholder="意味"
+								:disabled="isSubmitting"
+							>
 						</p>
 					</div>
 					<div class="field">
 						<p class="control is-expanded">
 							<input
+								v-model="dummyUser"
 								class="input"
 								type="text"
 								placeholder="名前"
+								:disabled="isSubmitting"
 							>
 						</p>
 					</div>
@@ -102,8 +111,9 @@
 									'is-loading': isSubmitting,
 								}"
 								:disabled="isSubmitting"
+								@click="onAddDummy"
 							>
-								追加
+								ダミー追加
 							</button>
 						</p>
 					</div>
@@ -140,6 +150,7 @@
 				</button>
 			</div>
 		</div>
+		<hr>
 	</form>
 </template>
 
@@ -160,6 +171,8 @@ export default {
 			ruby: '',
 			meaning: '',
 			description: '',
+			dummyText: '',
+			dummyUser: '',
 			isSubmitting: false,
 		};
 	},
@@ -249,6 +262,46 @@ export default {
 				body: new URLSearchParams({
 					token: this.token,
 					id: this.themeId,
+				}),
+			});
+			const data = await res.text();
+			console.log(data);
+			this.isSubmitting = false;
+		},
+		async onAddDummy(event) {
+			if (this.isSubmitting) {
+				return;
+			}
+			event.preventDefault();
+			this.isSubmitting = true;
+			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/meaning', {
+				method: 'POST',
+				mode: 'cors',
+				body: new URLSearchParams({
+					token: this.token,
+					theme_id: this.themeId,
+					text: this.dummyText,
+					username: this.dummyUser,
+				}),
+			});
+			const data = await res.text();
+			console.log(data);
+			this.isSubmitting = false;
+			this.dummyText = '';
+			this.dummyUser = '';
+		},
+		async onToggleAcceptDummy(dummy, event) {
+			if (this.isSubmitting) {
+				return;
+			}
+			event.preventDefault();
+			this.isSubmitting = true;
+			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/meaning/accept', {
+				method: dummy.isAccepted ? 'DELETE' : 'POST',
+				mode: 'cors',
+				body: new URLSearchParams({
+					token: this.token,
+					meaning_id: dummy.id,
 				}),
 			});
 			const data = await res.text();
