@@ -47,6 +47,70 @@
 			</div>
 		</div>
 
+		<div v-if="id !== null" class="field">
+			<label class="label">ダミー選択肢</label>
+			<div class="content">
+				<ul>
+					<li v-for="dummy in meanings" :key="dummy.id">
+						{{dummy.isAccepted ? '✔' : ''}}
+						{{dummy.text}} ({{dummy.username}})
+						<button
+							type="button"
+							class="button is-link is-small"
+							:class="{
+								'is-loading': isSubmitting,
+							}"
+							:disabled="isSubmitting"
+						>
+							{{dummy.isAccepted ? '不採用' : '採用'}}
+						</button>
+						<button
+							type="button"
+							class="button is-danger is-small"
+							:class="{
+								'is-loading': isSubmitting,
+							}"
+							:disabled="isSubmitting"
+						>
+							削除
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div class="field is-horizontal">
+				<div class="field-body">
+					<div class="field">
+						<p class="control is-expanded">
+							<input class="input" type="text" placeholder="意味">
+						</p>
+					</div>
+					<div class="field">
+						<p class="control is-expanded">
+							<input
+								class="input"
+								type="text"
+								placeholder="名前"
+							>
+						</p>
+					</div>
+					<div class="field">
+						<p class="control is-expanded">
+							<button
+								type="button"
+								class="button is-primary"
+								:class="{
+									'is-loading': isSubmitting,
+								}"
+								:disabled="isSubmitting"
+							>
+								追加
+							</button>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="field is-grouped">
 			<div class="control">
 				<button
@@ -95,7 +159,6 @@ export default {
 			word: '',
 			ruby: '',
 			meaning: '',
-			meanings: [],
 			description: '',
 			isSubmitting: false,
 		};
@@ -105,15 +168,26 @@ export default {
 			getTheme: 'tsgliveTahoiyaThemes/getTheme',
 		}),
 		...mapState(['token']),
+		meanings() {
+			const allMeanings = this.$store.state.tsgliveTahoiyaMeanings.list;
+			const meanings = allMeanings.filter((meaning) => meaning.themeId === this.themeId);
+			return meanings;
+		},
 	},
 	async fetch({store}) {
 		if (!process.browser) {
-			await store.dispatch('tsgliveTahoiyaThemes/bindList');
+			await Promise.all([
+				store.dispatch('tsgliveTahoiyaThemes/bindList'),
+				store.dispatch('tsgliveTahoiyaMeanings/bindList'),
+			]);
 		}
 	},
 	async mounted() {
 		this.themeId = this.id;
-		await this.$store.dispatch('tsgliveTahoiyaThemes/initList');
+		await Promise.all([
+			this.$store.dispatch('tsgliveTahoiyaThemes/initList'),
+			this.$store.dispatch('tsgliveTahoiyaMeanings/initList'),
+		]);
 		if (this.id !== null) {
 			const theme = await this.getTheme(this.id);
 			this.word = theme.word;

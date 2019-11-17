@@ -16,7 +16,6 @@ const localMutations = {
 
 const localGetters = {
 	list: (state) => state.list,
-	getMeaning: (state) => (id) => state.list.find((meaning) => meaning.id === id),
 };
 
 const localActions = {

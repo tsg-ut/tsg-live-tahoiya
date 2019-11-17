@@ -40,10 +40,12 @@ export default {
 	async fetch({store}) {
 		if (!process.browser) {
 			await store.dispatch('tsgliveTahoiyaThemes/bindList');
+			await store.dispatch('tsgliveTahoiyaMeanings/bindList');
 		}
 	},
 	mounted() {
 		this.$store.dispatch('tsgliveTahoiyaThemes/initList');
+		this.$store.dispatch('tsgliveTahoiyaMeanings/initList');
 	},
 	methods: {
 		onAdd() {
