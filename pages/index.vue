@@ -1,23 +1,27 @@
 <template>
 	<div class="container">
-		{{tahoiyaThemes}}
+		<theme-submit
+			v-for="theme in themes"
+			:id="theme.id"
+			:key="theme.id"
+			:ruby="theme.ruby"
+		/>
 	</div>
 </template>
 
 <script>
-import flatten from 'lodash/flatten.js';
-import get from 'lodash/get.js';
+import ThemeSubmit from '~/components/ThemeSubmit.vue';
 import {mapState} from 'vuex';
-import sum from 'lodash/sum.js';
 
 export default {
+	components: {ThemeSubmit},
 	data() {
 		return {
 		};
 	},
 	computed: {
 		...mapState({
-			tahoiyaThemes: (state) => state.tsgliveTahoiyaThemes.list,
+			themes: (state) => state.tsgliveTahoiyaThemes.list.slice().sort((a, b) => a.date.seconds - b.date.seconds),
 		}),
 	},
 	async fetch({store}) {
@@ -25,21 +29,21 @@ export default {
 			await store.dispatch('tsgliveTahoiyaThemes/bindList');
 		}
 	},
-	mounted() {
-		this.$store.dispatch('tsgliveTahoiyaThemes/initList');
+	async mounted() {
+		await Promise.all([
+			this.$store.dispatch('tsgliveTahoiyaThemes/initList'),
+			this.$store.dispatch('tsgliveTahoiyaMeanings/initList'),
+		]);
 	},
 	methods: {
+		onSubmit(event) {
+			event.preventDefault();
+		},
 	},
 	head() {
 		return {
-			title: 'TSG LIVE! たほいやシステム',
+			title: 'TSG LIVE! 登録フォーム',
 		};
 	},
 };
 </script>
-
-<style>
-.index-icon {
-	vertical-align: bottom;
-}
-</style>
