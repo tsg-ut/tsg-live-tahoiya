@@ -8,17 +8,32 @@
 					by <a href="https://github.com/hakatashi">@hakatashi</a> ●
 					<a href="https://github.com/tsg-ut/tsg-live-tahoiya">GitHub</a>
 				</p>
+				<p>
+					uid: {{uid}}
+				</p>
 			</div>
 		</footer>
 	</div>
 </template>
 
 <script>
+import firebase from '~/components/utils/firebase.js';
+import {mapState} from 'vuex';
+
 export default {
 	data() {
 		return {
 			isActive: false,
 		};
+	},
+	computed: {
+		...mapState(['uid']),
+	},
+	async mounted() {
+		const {user} = await firebase.auth().signInAnonymously();
+		this.$store.commit('setUid', user.uid);
+		const token = await user.getIdToken();
+		this.$store.commit('setToken', token);
 	},
 };
 </script>

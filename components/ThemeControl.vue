@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 
 export default {
 	props: {
@@ -104,6 +104,7 @@ export default {
 		...mapGetters({
 			getTheme: 'tsgliveTahoiyaThemes/getTheme',
 		}),
+		...mapState(['token']),
 	},
 	async fetch({store}) {
 		if (!process.browser) {
@@ -134,6 +135,7 @@ export default {
 					method: 'POST',
 					mode: 'cors',
 					body: new URLSearchParams({
+						token: this.token,
 						word: this.word,
 						ruby: this.ruby,
 						meaning: this.meaning,
@@ -147,6 +149,7 @@ export default {
 					method: 'PATCH',
 					mode: 'cors',
 					body: new URLSearchParams({
+						token: this.token,
 						id: this.themeId,
 						word: this.word,
 						ruby: this.ruby,
@@ -170,6 +173,7 @@ export default {
 				method: 'DELETE',
 				mode: 'cors',
 				body: new URLSearchParams({
+					token: this.token,
 					id: this.themeId,
 				}),
 			});
