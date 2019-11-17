@@ -5,6 +5,19 @@
 			:id="theme.id"
 			:key="theme.ruby"
 		/>
+		<theme-control
+			v-if="isAdding"
+			:id="null"
+			@submit="onAddComplete"
+		/>
+		<hr>
+		<button
+			type="submit"
+			class="button is-primary"
+			@click="onAdd"
+		>
+			追加
+		</button>
 	</div>
 </template>
 
@@ -16,11 +29,12 @@ export default {
 	components: {ThemeControl},
 	data() {
 		return {
+			isAdding: false,
 		};
 	},
 	computed: {
 		...mapState({
-			tahoiyaThemes: (state) => state.tsgliveTahoiyaThemes.list,
+			tahoiyaThemes: (state) => state.tsgliveTahoiyaThemes.list.slice().sort((a, b) => a.date.seconds - b.date.seconds),
 		}),
 	},
 	async fetch({store}) {
@@ -32,6 +46,12 @@ export default {
 		this.$store.dispatch('tsgliveTahoiyaThemes/initList');
 	},
 	methods: {
+		onAdd() {
+			this.isAdding = true;
+		},
+		onAddComplete() {
+			this.isAdding = false;
+		},
 	},
 	head() {
 		return {

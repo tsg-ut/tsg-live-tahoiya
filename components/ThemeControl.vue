@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="field">
-			<label class="label">解説</label>
+			<label class="label">解説 (Markdown)</label>
 			<div class="control">
 				<textarea
 					v-model="description"
@@ -39,11 +39,15 @@
 			<div class="control">
 				<button
 					type="submit"
-					class="button is-link"
-					:class="{'is-loading': isSubmitting}"
+					class="button"
+					:class="{
+						'is-loading': isSubmitting,
+						'is-link': id !== null,
+						'is-primary': id === null,
+					}"
 					:disabled="isSubmitting"
 				>
-					更新
+					{{id === null ? '追加' : '更新'}}
 				</button>
 			</div>
 		</div>
@@ -83,10 +87,12 @@ export default {
 	async mounted() {
 		this.themeId = this.id;
 		await this.$store.dispatch('tsgliveTahoiyaThemes/initList');
-		const theme = await this.getTheme(this.id);
-		this.word = theme.word;
-		this.ruby = theme.ruby;
-		this.description = theme.description;
+		if (this.id !== null) {
+			const theme = await this.getTheme(this.id);
+			this.word = theme.word;
+			this.ruby = theme.ruby;
+			this.description = theme.description;
+		}
 	},
 	methods: {
 		async onSubmit(event) {
@@ -95,19 +101,35 @@ export default {
 			}
 			event.preventDefault();
 			this.isSubmitting = true;
-			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
-				method: 'PATCH',
-				mode: 'cors',
-				body: new URLSearchParams({
-					id: this.themeId,
-					word: this.word,
-					ruby: this.ruby,
-					description: this.description,
-				}),
-			});
-			const data = await res.text();
+
+			if (this.id === null) {
+				const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
+					method: 'POST',
+					mode: 'cors',
+					body: new URLSearchParams({
+						word: this.word,
+						ruby: this.ruby,
+						description: this.description,
+					}),
+				});
+				const data = await res.text();
+				console.log(data);
+			} else {
+				const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
+					method: 'PATCH',
+					mode: 'cors',
+					body: new URLSearchParams({
+						id: this.themeId,
+						word: this.word,
+						ruby: this.ruby,
+						description: this.description,
+					}),
+				});
+				const data = await res.text();
+				console.log(data);
+			}
+			this.$emit('submit');
 			this.isSubmitting = false;
-			console.log(data);
 		},
 	},
 	head() {
