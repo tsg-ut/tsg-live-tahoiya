@@ -21,8 +21,8 @@ const localGetters = {
 const localActions = {
 	async initList({state, dispatch, commit}) {
 		if (!state.isInitList) {
-			await dispatch('bindList');
 			commit('initList');
+			await dispatch('bindList');
 		}
 	},
 	bindList: firestoreAction(async ({bindFirestoreRef}) => {

@@ -72,6 +72,7 @@
 								'is-loading': isSubmitting,
 							}"
 							:disabled="isSubmitting"
+							@click="onDeleteDummy(dummy, $event)"
 						>
 							削除
 						</button>
@@ -302,6 +303,24 @@ export default {
 				body: new URLSearchParams({
 					token: this.token,
 					meaning_id: dummy.id,
+				}),
+			});
+			const data = await res.text();
+			console.log(data);
+			this.isSubmitting = false;
+		},
+		async onDeleteDummy(dummy, event) {
+			if (this.isSubmitting) {
+				return;
+			}
+			event.preventDefault();
+			this.isSubmitting = true;
+			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/meaning', {
+				method: 'DELETE',
+				mode: 'cors',
+				body: new URLSearchParams({
+					token: this.token,
+					id: dummy.id,
 				}),
 			});
 			const data = await res.text();
