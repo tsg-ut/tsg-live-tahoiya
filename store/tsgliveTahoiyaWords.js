@@ -1,7 +1,7 @@
 import db from '~/components/utils/db.js';
 import {firestoreAction} from 'vuexfire';
 
-const achievementDataRef = db.collection('achievement_data');
+const tsgliveTahoiyaWordsRef = db.collection('tsglive_tahoiya_words');
 
 const localState = () => ({
 	isInitList: null,
@@ -16,15 +16,6 @@ const localMutations = {
 
 const localGetters = {
 	list: (state) => state.list,
-	getById: (state) => (
-		(id) => {
-			const achievementDatum = state.list.find((datum) => datum.id === id);
-			if (achievementDatum === undefined) {
-				return {id};
-			}
-			return achievementDatum;
-		}
-	),
 };
 
 const localActions = {
@@ -35,7 +26,7 @@ const localActions = {
 		}
 	},
 	bindList: firestoreAction(async ({bindFirestoreRef}) => {
-		await bindFirestoreRef('list', achievementDataRef);
+		await bindFirestoreRef('list', tsgliveTahoiyaWordsRef);
 	}),
 };
 
