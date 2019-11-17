@@ -1,7 +1,7 @@
 import db from '~/components/utils/db.js';
 import {firestoreAction} from 'vuexfire';
 
-const tsgliveTahoiyaWordsRef = db.collection('tsglive_tahoiya_words');
+const tsgliveTahoiyaThemesRef = db.collection('tsglive_tahoiya_themes');
 
 const localState = () => ({
 	isInitList: null,
@@ -26,7 +26,7 @@ const localActions = {
 		}
 	},
 	bindList: firestoreAction(async ({bindFirestoreRef}) => {
-		await bindFirestoreRef('list', tsgliveTahoiyaWordsRef);
+		await bindFirestoreRef('list', tsgliveTahoiyaThemesRef);
 	}),
 };
 
