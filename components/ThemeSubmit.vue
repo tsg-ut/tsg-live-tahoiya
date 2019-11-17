@@ -63,6 +63,10 @@ export default {
 			type: String,
 			default: null,
 		},
+		username: {
+			type: String,
+			default: null,
+		},
 	},
 	data() {
 		return {
@@ -74,8 +78,6 @@ export default {
 		...mapState(['token', 'uid']),
 		meaning() {
 			const allMeanings = this.$store.state.tsgliveTahoiyaMeanings.list;
-			console.log(allMeanings);
-
 			return allMeanings.find((meaning) => meaning.themeId === this.id && meaning.uid === this.uid);
 		},
 	},
@@ -109,7 +111,7 @@ export default {
 					token: this.token,
 					theme_id: this.id,
 					text: this.text,
-					username: '匿名希望',
+					username: this.username,
 				}),
 			});
 

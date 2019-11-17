@@ -1,11 +1,28 @@
 <template>
-	<div class="container">
-		<theme-submit
-			v-for="theme in themes"
-			:id="theme.id"
-			:key="theme.id"
-			:ruby="theme.ruby"
-		/>
+	<div>
+		<div class="index-header">
+			<img src="logo.svg">
+			<p>
+				オープニングトーク特別企画「たほいや」<br>
+				視聴者参加フォーム
+			</p>
+		</div>
+		<div class="container has-text-centered">
+			<label class="label">よろしければお名前をどうぞ</label>
+			<input
+				v-model="username"
+				class="input"
+				type="text"
+			>
+			<hr>
+			<theme-submit
+				v-for="theme in themes"
+				:id="theme.id"
+				:key="theme.id"
+				:ruby="theme.ruby"
+				:username="username"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -17,6 +34,7 @@ export default {
 	components: {ThemeSubmit},
 	data() {
 		return {
+			username: '匿名希望',
 		};
 	},
 	computed: {
@@ -47,3 +65,15 @@ export default {
 	},
 };
 </script>
+
+<style>
+.index-header {
+	background: #1c2123;
+	padding: 1rem;
+	text-align: center;
+	color: white;
+}
+.index-header img {
+	max-width: 40rem;
+}
+</style>
