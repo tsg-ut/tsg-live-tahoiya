@@ -3,27 +3,48 @@
 		<div class="field">
 			<label class="label">単語</label>
 			<div class="control">
-				<input v-model="word" class="input" type="text">
+				<input
+					v-model="word"
+					class="input"
+					type="text"
+					:disabled="isSubmitting"
+				>
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">読み</label>
 			<div class="control">
-				<input v-model="ruby" class="input" type="text">
+				<input
+					v-model="ruby"
+					class="input"
+					type="text"
+					:disabled="isSubmitting"
+				>
 			</div>
 		</div>
 
 		<div class="field">
 			<label class="label">解説</label>
 			<div class="control">
-				<textarea v-model="description" class="textarea"/>
+				<textarea
+					v-model="description"
+					class="textarea"
+					:disabled="isSubmitting"
+				/>
 			</div>
 		</div>
 
 		<div class="field is-grouped">
 			<div class="control">
-				<button type="submit" class="button is-link">更新</button>
+				<button
+					type="submit"
+					class="button is-link"
+					:class="{'is-loading': isSubmitting}"
+					:disabled="isSubmitting"
+				>
+					更新
+				</button>
 			</div>
 		</div>
 	</form>
@@ -46,6 +67,7 @@ export default {
 			ruby: '',
 			meanings: [],
 			description: '',
+			isSubmitting: false,
 		};
 	},
 	computed: {
@@ -67,12 +89,25 @@ export default {
 		this.description = theme.description;
 	},
 	methods: {
-		onSubmit(event) {
+		async onSubmit(event) {
+			if (this.isSubmitting) {
+				return;
+			}
 			event.preventDefault();
-			console.log(this.word);
-			console.log(this.ruby);
-			console.log(this.meanings);
-			console.log(this.description);
+			this.isSubmitting = true;
+			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
+				method: 'PATCH',
+				mode: 'cors',
+				body: new URLSearchParams({
+					id: this.themeId,
+					word: this.word,
+					ruby: this.ruby,
+					description: this.description,
+				}),
+			});
+			const data = await res.text();
+			this.isSubmitting = false;
+			console.log(data);
 		},
 	},
 	head() {
