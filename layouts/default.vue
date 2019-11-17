@@ -34,6 +34,8 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	box-sizing: border-box;
+	min-height: 100%;
+	background-color: #ecebde;
 }
 
 .container {
@@ -42,5 +44,6 @@ html {
 
 .footer {
 	margin-top: 1rem;
+	background: transparent;
 }
 </style>

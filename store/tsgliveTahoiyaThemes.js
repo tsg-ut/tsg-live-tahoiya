@@ -16,6 +16,7 @@ const localMutations = {
 
 const localGetters = {
 	list: (state) => state.list,
+	getTheme: (state) => (id) => state.list.find((theme) => theme.id === id),
 };
 
 const localActions = {

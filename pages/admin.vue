@@ -1,16 +1,19 @@
 <template>
 	<div class="container">
-		{{tahoiyaThemes}}
+		<theme-control
+			v-for="theme of tahoiyaThemes"
+			:id="theme.id"
+			:key="theme.ruby"
+		/>
 	</div>
 </template>
 
 <script>
-import flatten from 'lodash/flatten.js';
-import get from 'lodash/get.js';
+import ThemeControl from '~/components/ThemeControl.vue';
 import {mapState} from 'vuex';
-import sum from 'lodash/sum.js';
 
 export default {
+	components: {ThemeControl},
 	data() {
 		return {
 		};
