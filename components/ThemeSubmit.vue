@@ -7,7 +7,7 @@
 			{{ruby}}
 		</div>
 		<div class="subtitle">
-			の「辞書に載ってそうな意味」を考えてください⋯⋯
+			の「辞書に載っていそうな意味」を考えてください⋯⋯
 		</div>
 
 		<div class="field">

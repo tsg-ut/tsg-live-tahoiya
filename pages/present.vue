@@ -7,10 +7,10 @@
 	>
 		<div v-if="phase === 'title'" class="phase phase-title">
 			<div class="contents">
-				<div class="my-subtitle">
+				<div class="font-small">
 					TSG LIVE! 4 オープニングトーク特別企画
 				</div>
-				<div class="bold my-title">
+				<div class="bold font-xxlarge">
 					たほいや
 				</div>
 			</div>
@@ -19,7 +19,7 @@
 			<div class="contents">
 				<div class="theme-index bold font-large">第{{themeIndex + 1}}問</div>
 				<div class="bold font-xxlarge">{{theme.ruby}}</div>
-				<div class="font-small">の「辞書に載ってそうな意味」を考えてください⋯⋯</div>
+				<div class="font-small">の「辞書に載っていそうな意味」を考えてください⋯⋯</div>
 			</div>
 		</div>
 		<div v-if="phase === 'choices' || phase === 'answer'" class="phase phase-choices">
@@ -52,7 +52,12 @@
 				<vue-markdown class="font-small content">{{theme.description}}</vue-markdown>
 			</div>
 		</div>
-		<div class="pr">
+		<div v-if="phase === 'end'" class="phase phase-title">
+			<div class="contents">
+				<div class="bold font-xxlarge">おしまい</div>
+			</div>
+		</div>
+		<div v-if="phase !== 'end'" class="pr">
 			<img src="~/assets/qrcode.png">
 			<div class="info">
 				<div class="font-small">視聴者の皆さんも参加できます！</div>
@@ -137,8 +142,12 @@ export default {
 			} else if (this.phase === 'answer') {
 				this.phase = 'description';
 			} else if (this.phase === 'description') {
-				this.themeIndex++;
-				this.phase = 'word';
+				if (this.themeIndex === this.themes.length - 1) {
+					this.phase = 'end';
+				} else {
+					this.themeIndex++;
+					this.phase = 'word';
+				}
 			}
 		},
 		prev() {
@@ -157,6 +166,9 @@ export default {
 				this.phase = 'choices';
 			} else if (this.phase === 'description') {
 				this.phase = 'answer';
+			} else if (this.phase === 'end') {
+				this.themeIndex = this.themes.length - 1;
+				this.phase = 'description';
 			}
 		},
 	},
@@ -229,12 +241,6 @@ export default {
 	align-items: center;
 	text-align: center;
 }
-.phase-title .my-subtitle {
-	font-size: 4vmin;
-}
-.phase-title .my-title {
-	font-size: 14vmin;
-}
 .phase-word .contents {
 	text-align: right;
 	padding: 15vmin 10vmin 0;
@@ -270,14 +276,11 @@ export default {
 	flex-direction: column;
 	height: 100%;
 }
-.phase-description .content {
+.phase-description .contents .content {
 	flex: 1 0 0;
 	overflow-y: auto;
-	margin: 2vmin 0 13vmin;
-}
-.phase-description .contents .content {
+	margin: 0 0 13vmin;
 	line-height: 1.3em;
-	margin-top: 5vmin;
 }
 .phase-description .contents .content strong {
 	color: #F44336;
