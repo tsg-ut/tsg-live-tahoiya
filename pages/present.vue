@@ -46,6 +46,12 @@
 				</ol>
 			</div>
 		</div>
+		<div v-if="phase === 'description'" class="phase phase-description">
+			<div class="contents">
+				<div class="bold font-large">{{theme.word}}（{{theme.ruby}}）</div>
+				<vue-markdown class="font-small content">{{theme.description}}</vue-markdown>
+			</div>
+		</div>
 		<div class="pr">
 			<img src="~/assets/qrcode.png">
 			<div class="info">
@@ -57,9 +63,11 @@
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown';
 import {mapState} from 'vuex';
 
 export default {
+	components: {VueMarkdown},
 	layout: 'present',
 	data() {
 		return {
@@ -255,5 +263,26 @@ export default {
 }
 .phase-choices .choice.answer {
 	color: #F44336;
+}
+.phase-description .contents {
+	padding: 5vmin;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+.phase-description .content {
+	flex: 1 0 0;
+	overflow-y: auto;
+	margin: 2vmin 0 13vmin;
+}
+.phase-description .contents .content {
+	line-height: 1.3em;
+	margin-top: 5vmin;
+}
+.phase-description .contents .content strong {
+	color: #F44336;
+}
+.phase-description .contents .content li + li {
+	margin-top: 2vmin;
 }
 </style>

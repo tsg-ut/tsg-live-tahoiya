@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@nuxtjs/bulma": "^1.2.6",
-    "nuxt": "^2.10.2"
+    "nuxt": "^2.10.2",
+    "vue-markdown": "^2.2.4"
   },
   "devDependencies": {
     "@hakatashi/eslint-config": "^1.10.1",
