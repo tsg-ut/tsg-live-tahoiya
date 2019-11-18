@@ -1,5 +1,6 @@
 const firebase = require('firebase/app');
 require('firebase/firestore');
+require('firebase/auth');
 
 if (firebase.apps.length === 0) {
 	firebase.initializeApp({
