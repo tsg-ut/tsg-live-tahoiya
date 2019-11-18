@@ -15,6 +15,9 @@ export default {
 		link: [
 			{rel: 'icon', type: 'image/png', href: '/favicon.png'},
 		],
+		script: [
+			{src: 'http://localhost:8080/socket.io/socket.io.js'},
+		],
 		htmlAttrs: {
 			lang: 'ja',
 		},

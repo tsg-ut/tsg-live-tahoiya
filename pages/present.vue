@@ -28,7 +28,7 @@
 				<div class="thin font-xsmall font-align-right">参加者: {{participantsText}}</div>
 				<ol class="choices font-small">
 					<li
-						v-for="choice in choices"
+						v-for="(choice, index) in choices"
 						:key="choice.id"
 						class="choice"
 						:class="{
@@ -36,6 +36,12 @@
 						}"
 					>
 						{{choice.text}}
+						<span
+							v-if="getVotes(index + 1) !== 0"
+							class="font-xsmall votes"
+						>
+							{{getVotes(index + 1)}}票
+						</span>
 						<span
 							v-if="phase === 'answer' && choice.type === 'dummy'"
 							class="font-xsmall thin"
@@ -78,6 +84,7 @@ export default {
 		return {
 			phase: 'title',
 			themeIndex: 0,
+			votes: [],
 		};
 	},
 	computed: {
@@ -93,6 +100,9 @@ export default {
 			return meanings;
 		},
 		choices() {
+			if (!this.theme) {
+				return [];
+			}
 			const choices = [
 				...this.meanings.map((meaning) => ({
 					type: 'dummy',
@@ -113,6 +123,13 @@ export default {
 		},
 	},
 	async mounted() {
+		if (typeof io !== 'undefined') {
+			const socket = global.io('http://localhost:8080/');
+			socket.on('connect', () => {
+				console.log('websocket connected');
+			});
+			socket.on('message', this.onMessage);
+		}
 		await Promise.all([
 			this.$store.dispatch('tsgliveTahoiyaThemes/initList'),
 			this.$store.dispatch('tsgliveTahoiyaMeanings/initList'),
@@ -134,6 +151,7 @@ export default {
 		next() {
 			if (this.phase === 'title') {
 				this.themeIndex = 0;
+				this.votes = [];
 				this.phase = 'word';
 			} else if (this.phase === 'word') {
 				this.phase = 'choices';
@@ -146,6 +164,7 @@ export default {
 					this.phase = 'end';
 				} else {
 					this.themeIndex++;
+					this.votes = [];
 					this.phase = 'word';
 				}
 			}
@@ -158,6 +177,7 @@ export default {
 					this.phase = 'title';
 				} else {
 					this.themeIndex--;
+					this.votes = [];
 					this.phase = 'description';
 				}
 			} else if (this.phase === 'choices') {
@@ -168,8 +188,36 @@ export default {
 				this.phase = 'answer';
 			} else if (this.phase === 'end') {
 				this.themeIndex = this.themes.length - 1;
+				this.votes = [];
 				this.phase = 'description';
 			}
+		},
+		onMessage(event) {
+			if (!event.text.match(/^\d+$/)) {
+				return;
+			}
+			const choice = parseInt(event.text);
+			if (choice < 1 || choice > this.choices.length) {
+				return;
+			}
+			const vote = this.votes.find((vote) => (
+				vote.type !== 'anonymous' &&
+				vote.username === event.username &&
+				vote.type === event.type
+			));
+			if (vote) {
+				vote.choice = choice;
+			} else {
+				this.votes.push({
+					type: event.type,
+					username: event.username,
+					choice,
+				});
+			}
+		},
+		getVotes(choice) {
+			const votes = this.votes.filter((vote) => vote.choice === choice);
+			return votes.length;
 		},
 	},
 	head() {
@@ -269,6 +317,17 @@ export default {
 }
 .phase-choices .choice.answer {
 	color: #F44336;
+}
+.phase-choices .votes {
+	display: inline-block;
+	color: #ecebde;
+	background: #191919;
+	padding: 0.1vmin 1.2vmin;
+	border-radius: 0.6vmin;
+	vertical-align: middle;
+}
+.phase-choices .answer .votes {
+	background: #F44336;
 }
 .phase-description .contents {
 	padding: 5vmin;
