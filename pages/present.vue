@@ -22,12 +22,27 @@
 				<div class="font-small">の「辞書に載ってそうな意味」を考えてください⋯⋯</div>
 			</div>
 		</div>
-		<div v-if="phase === 'choices'" class="phase phase-choices">
+		<div v-if="phase === 'choices' || phase === 'answer'" class="phase phase-choices">
 			<div class="contents">
-				<div class="bold font-large">「{{theme.ruby}}」の正しい意味は⋯⋯</div>
+				<div class="bold font-medium">「{{theme.ruby}}」の正しい意味は⋯⋯</div>
 				<div class="thin font-xsmall font-align-right">参加者: {{participantsText}}</div>
 				<ol class="choices font-small">
-					<li v-for="choice in choices" :key="choice.id" class="choice">{{choice.text}}</li>
+					<li
+						v-for="choice in choices"
+						:key="choice.id"
+						class="choice"
+						:class="{
+							answer: phase === 'answer' && choice.type === 'answer'
+						}"
+					>
+						{{choice.text}}
+						<span
+							v-if="phase === 'answer' && choice.type === 'dummy'"
+							class="font-xsmall thin"
+						>
+							{{choice.username}}
+						</span>
+					</li>
 				</ol>
 			</div>
 		</div>
@@ -182,6 +197,9 @@ export default {
 .present .font-xsmall {
 	font-size: 2.5vmin;
 }
+.present .font-xxsmall {
+	font-size: 1.5vmin;
+}
 .present .font-align-right {
 	text-align: right;
 }
@@ -222,12 +240,20 @@ export default {
 }
 .phase-choices .contents {
 	padding: 5vmin;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 .phase-choices .choices {
-	margin-top: 5vmin;
+	flex: 1 0 0;
+	overflow-y: auto;
+	margin: 5vmin 0 13vmin;
 	padding-left: 10vmin;
 }
 .phase-choices .choice {
 	margin-bottom: 0.5em;
+}
+.phase-choices .choice.answer {
+	color: #F44336;
 }
 </style>
