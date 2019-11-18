@@ -29,6 +29,22 @@
 				</div>
 			</div>
 		</div>
+		<div v-if="phase === 'choices'" class="phase phase-choices">
+			<div class="contents">
+				<div class="bold font-large">「{{theme.ruby}}」の正しい意味は⋯⋯</div>
+				<div class="thin font-xsmall font-align-right">参加者: {{participantsText}}</div>
+				<ol class="choices font-small">
+					<li v-for="choice in choices" :key="choice.id" class="choice">{{choice.text}}</li>
+				</ol>
+			</div>
+			<div class="pr">
+				<img src="~/assets/qrcode.png">
+				<div class="info">
+					<div class="font-small">視聴者の皆さんも参加できます！</div>
+					<div class="font-medium">tahoiya.tsg.ne.jp</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -49,6 +65,30 @@ export default {
 		}),
 		theme() {
 			return this.themes[this.themeIndex];
+		},
+		meanings() {
+			const allMeanings = this.$store.state.tsgliveTahoiyaMeanings.list;
+			const meanings = allMeanings.filter((meaning) => meaning.themeId === this.theme.id && meaning.isAccepted);
+			return meanings;
+		},
+		choices() {
+			const choices = [
+				...this.meanings.map((meaning) => ({
+					type: 'dummy',
+					id: meaning.id,
+					text: meaning.text,
+					username: meaning.username,
+				})),
+				{
+					type: 'answer',
+					id: this.theme.id,
+					text: this.theme.meaning,
+				},
+			];
+			return choices.sort((a, b) => a.id.localeCompare(b.id));
+		},
+		participantsText() {
+			return this.meanings.map((choice) => choice.username).sort().join(' / ');
 		},
 	},
 	async mounted() {
@@ -102,6 +142,9 @@ export default {
 	font-family: 'Noto Serif CJK JP', serif;
 	font-weight: 700;
 }
+.thin {
+	font-weight: 200;
+}
 .background.dark {
 	background-color: #191919;
 	color: #ecebde;
@@ -125,6 +168,12 @@ export default {
 }
 .phase .font-small {
 	font-size: 4vmin;
+}
+.phase .font-xsmall {
+	font-size: 2.5vmin;
+}
+.phase .font-align-right {
+	text-align: right;
 }
 .phase .pr {
 	position: absolute;
@@ -160,5 +209,15 @@ export default {
 	margin-bottom: 5vmin;
 	border: 1vmin #ecebde solid;
 	border-radius: 0.5vmin;
+}
+.phase-choices .contents {
+	padding: 5vmin;
+}
+.phase-choices .choices {
+	margin-top: 5vmin;
+	padding-left: 10vmin;
+}
+.phase-choices .choice {
+	margin-bottom: 0.5em;
 }
 </style>
