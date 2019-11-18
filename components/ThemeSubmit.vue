@@ -81,16 +81,7 @@ export default {
 			return allMeanings.find((meaning) => meaning.themeId === this.id && meaning.uid === this.uid);
 		},
 	},
-	async fetch({store}) {
-		if (!process.browser) {
-			await Promise.all([
-				store.dispatch('tsgliveTahoiyaThemes/bindList'),
-				store.dispatch('tsgliveTahoiyaMeanings/bindList'),
-			]);
-		}
-	},
 	async mounted() {
-		this.themeId = this.id;
 		await Promise.all([
 			this.$store.dispatch('tsgliveTahoiyaThemes/initList'),
 			this.$store.dispatch('tsgliveTahoiyaMeanings/initList'),

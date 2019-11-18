@@ -188,14 +188,6 @@ export default {
 			return meanings;
 		},
 	},
-	async fetch({store}) {
-		if (!process.browser) {
-			await Promise.all([
-				store.dispatch('tsgliveTahoiyaThemes/bindList'),
-				store.dispatch('tsgliveTahoiyaMeanings/bindList'),
-			]);
-		}
-	},
 	async mounted() {
 		this.themeId = this.id;
 		await Promise.all([

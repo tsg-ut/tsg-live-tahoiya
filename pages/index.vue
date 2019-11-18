@@ -42,16 +42,8 @@ export default {
 			themes: (state) => state.tsgliveTahoiyaThemes.list.slice().sort((a, b) => a.date.seconds - b.date.seconds),
 		}),
 	},
-	async fetch({store}) {
-		if (!process.browser) {
-			await store.dispatch('tsgliveTahoiyaThemes/bindList');
-		}
-	},
-	async mounted() {
-		await Promise.all([
-			this.$store.dispatch('tsgliveTahoiyaThemes/initList'),
-			this.$store.dispatch('tsgliveTahoiyaMeanings/initList'),
-		]);
+	mounted() {
+		this.$store.dispatch('tsgliveTahoiyaThemes/initList');
 	},
 	methods: {
 		onSubmit(event) {
