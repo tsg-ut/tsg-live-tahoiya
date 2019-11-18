@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="background"
+		class="present"
 		:class="{
 			dark: phase === 'word'
 		}"
@@ -21,13 +21,6 @@
 				<div class="bold font-xxlarge">{{theme.ruby}}</div>
 				<div class="font-small">の「辞書に載ってそうな意味」を考えてください⋯⋯</div>
 			</div>
-			<div class="pr">
-				<img src="~/assets/qrcode.png">
-				<div class="info">
-					<div class="font-small">視聴者の皆さんも参加できます！</div>
-					<div class="font-medium">tahoiya.tsg.ne.jp</div>
-				</div>
-			</div>
 		</div>
 		<div v-if="phase === 'choices'" class="phase phase-choices">
 			<div class="contents">
@@ -37,12 +30,12 @@
 					<li v-for="choice in choices" :key="choice.id" class="choice">{{choice.text}}</li>
 				</ol>
 			</div>
-			<div class="pr">
-				<img src="~/assets/qrcode.png">
-				<div class="info">
-					<div class="font-small">視聴者の皆さんも参加できます！</div>
-					<div class="font-medium">tahoiya.tsg.ne.jp</div>
-				</div>
+		</div>
+		<div class="pr">
+			<img src="~/assets/qrcode.png">
+			<div class="info">
+				<div class="font-small">視聴者の皆さんも参加できます！</div>
+				<div class="font-medium">tahoiya.tsg.ne.jp</div>
 			</div>
 		</div>
 	</div>
@@ -126,7 +119,22 @@ export default {
 			}
 		},
 		prev() {
-
+			if (this.phase === 'title') {
+				// nop
+			} else if (this.phase === 'word') {
+				if (this.themeIndex === 0) {
+					this.phase = 'title';
+				} else {
+					this.themeIndex--;
+					this.phase = 'description';
+				}
+			} else if (this.phase === 'choices') {
+				this.phase = 'word';
+			} else if (this.phase === 'answer') {
+				this.phase = 'choices';
+			} else if (this.phase === 'description') {
+				this.phase = 'answer';
+			}
 		},
 	},
 	head() {
@@ -145,44 +153,46 @@ export default {
 .thin {
 	font-weight: 200;
 }
-.background.dark {
+.present {
+	position: relative;
+}
+.present.dark {
 	background-color: #191919;
 	color: #ecebde;
 }
-.phase {
-	position: relative;
+.present, .phase {
 	width: 100vw;
 	height: 100vh;
 }
-.phase .font-xxlarge {
+.present .font-xxlarge {
 	font-size: 15vmin;
 }
-.phase .font-xlarge {
+.present .font-xlarge {
 	font-size: 11vmin;
 }
-.phase .font-large {
+.present .font-large {
 	font-size: 8vmin;
 }
-.phase .font-medium {
+.present .font-medium {
 	font-size: 6vmin;
 }
-.phase .font-small {
+.present .font-small {
 	font-size: 4vmin;
 }
-.phase .font-xsmall {
+.present .font-xsmall {
 	font-size: 2.5vmin;
 }
-.phase .font-align-right {
+.present .font-align-right {
 	text-align: right;
 }
-.phase .pr {
+.present .pr {
 	position: absolute;
 	bottom: 2vmin;
 	left: 2vmin;
 
 	display: flex;
 }
-.phase .pr img {
+.present .pr img {
 	width: 15vmin;
 	height: 15vmin;
 	margin-right: 2vmin;
