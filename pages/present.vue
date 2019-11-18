@@ -21,6 +21,13 @@
 				<div class="bold font-xxlarge">{{theme.ruby}}</div>
 				<div class="font-small">の「辞書に載ってそうな意味」を考えてください⋯⋯</div>
 			</div>
+			<div class="pr">
+				<img src="~/assets/qrcode.png">
+				<div class="info">
+					<div class="font-small">視聴者の皆さんも参加できます！</div>
+					<div class="font-medium">tahoiya.tsg.ne.jp</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -100,6 +107,7 @@ export default {
 	color: #ecebde;
 }
 .phase {
+	position: relative;
 	width: 100vw;
 	height: 100vh;
 }
@@ -112,8 +120,23 @@ export default {
 .phase .font-large {
 	font-size: 8vmin;
 }
+.phase .font-medium {
+	font-size: 6vmin;
+}
 .phase .font-small {
 	font-size: 4vmin;
+}
+.phase .pr {
+	position: absolute;
+	bottom: 2vmin;
+	left: 2vmin;
+
+	display: flex;
+}
+.phase .pr img {
+	width: 15vmin;
+	height: 15vmin;
+	margin-right: 2vmin;
 }
 .phase-title {
 	display: flex;
@@ -129,7 +152,7 @@ export default {
 }
 .phase-word .contents {
 	text-align: right;
-	padding: 20vmin 10vmin 0;
+	padding: 15vmin 10vmin 0;
 }
 .phase-word .theme-index {
 	display: inline-block;
