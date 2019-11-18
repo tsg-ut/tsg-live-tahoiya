@@ -99,3 +99,12 @@ and limitations under the License.
  * (c) 2019-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
  */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
