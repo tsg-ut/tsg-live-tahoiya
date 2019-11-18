@@ -211,7 +211,7 @@ export default {
 			this.isSubmitting = true;
 
 			if (this.id === null) {
-				const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
+				const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/theme', {
 					method: 'POST',
 					mode: 'cors',
 					body: new URLSearchParams({
@@ -225,7 +225,7 @@ export default {
 				const data = await res.text();
 				console.log(data);
 			} else {
-				const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
+				const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/theme', {
 					method: 'PATCH',
 					mode: 'cors',
 					body: new URLSearchParams({
@@ -249,7 +249,7 @@ export default {
 			}
 			event.preventDefault();
 			this.isSubmitting = true;
-			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/theme', {
+			const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/theme', {
 				method: 'DELETE',
 				mode: 'cors',
 				body: new URLSearchParams({
@@ -267,7 +267,7 @@ export default {
 			}
 			event.preventDefault();
 			this.isSubmitting = true;
-			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/meaning', {
+			const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/meaning', {
 				method: 'POST',
 				mode: 'cors',
 				body: new URLSearchParams({
@@ -289,7 +289,7 @@ export default {
 			}
 			event.preventDefault();
 			this.isSubmitting = true;
-			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/meaning/accept', {
+			const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/meaning/accept', {
 				method: dummy.isAccepted ? 'DELETE' : 'POST',
 				mode: 'cors',
 				body: new URLSearchParams({
@@ -307,7 +307,7 @@ export default {
 			}
 			event.preventDefault();
 			this.isSubmitting = true;
-			const res = await fetch('https://us-central1-hakatashi.cloudfunctions.net/tsglive/tahoiya/meaning', {
+			const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/meaning', {
 				method: 'DELETE',
 				mode: 'cors',
 				body: new URLSearchParams({
