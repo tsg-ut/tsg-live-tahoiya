@@ -64,7 +64,7 @@ export default {
 
 	...(process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 		router: {
-			base: '/achievement-viewer/',
+			base: '/tsg-live-tahoiya/',
 		},
 	} : {}),
 };
