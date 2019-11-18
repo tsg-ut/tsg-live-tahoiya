@@ -1,6 +1,6 @@
-# achievement-viewer
+# tsg-live-tahoiya
 
-> TSGerが集めた実績を見られるページ
+> ライブたほいやシステム
 
 ## Build Setup
 

@@ -14,6 +14,9 @@ module.exports = {
 		'node/no-unsupported-features': 'off',
 		'node/no-unsupported-features/es-syntax': 'off',
 		'max-params': 'off',
+		'no-console': 'off',
+		'require-atomic-updates': 'off',
+		'vue/comma-dangle': 'off',
 	},
 	globals: {},
 };
