@@ -223,12 +223,18 @@ export default {
 	head() {
 		return {
 			title: 'TSG LIVE! 特別企画「たほいや」',
+			htmlAttrs: {
+				class: 'present',
+			},
 		};
 	},
 };
 </script>
 
 <style>
+html.present {
+	overflow-y: hidden;
+}
 .bold {
 	font-family: 'Noto Serif CJK JP', serif;
 	font-weight: 700;
