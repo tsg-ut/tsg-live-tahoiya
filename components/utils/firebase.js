@@ -4,13 +4,14 @@ require('firebase/auth');
 
 if (firebase.apps.length === 0) {
 	firebase.initializeApp({
-		apiKey: 'AIzaSyAPaAYbtVtoZNrU9GA3jxXNKNptLJDe39g',
-		authDomain: 'hakata-shi.firebaseapp.com',
-		databaseURL: 'https://hakata-shi.firebaseio.com',
-		projectId: 'hakata-shi',
-		storageBucket: 'hakata-shi.appspot.com',
-		messagingSenderId: '745572740539',
-		appId: '1:745572740539:web:50444e3a76095a31',
+		apiKey: "AIzaSyAv8gwowPR5VHSeXRmXWYtzD2foxbAYz1g",
+		authDomain: "tsg-live-5.firebaseapp.com",
+		databaseURL: "https://tsg-live-5.firebaseio.com",
+		projectId: "tsg-live-5",
+		storageBucket: "tsg-live-5.appspot.com",
+		messagingSenderId: "907358007884",
+		appId: "1:907358007884:web:ba91a22a93f9d7c04efae9",
+		measurementId: "G-LX3SGDLC6X",
 	});
 }
 

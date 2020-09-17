@@ -95,7 +95,7 @@ export default {
 			event.preventDefault();
 			this.isSubmitting = true;
 
-			const res = await fetch('https://us-central1-hakata-shi.cloudfunctions.net/tsglive/tahoiya/meaning', {
+			const res = await fetch('https://us-central1-tsg-live-5.cloudfunctions.net/tsglive/tahoiya/meaning', {
 				method: 'POST',
 				mode: 'cors',
 				body: new URLSearchParams({
