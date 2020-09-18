@@ -8,7 +8,7 @@
 		<div v-if="phase === 'title'" class="phase phase-title">
 			<div class="contents">
 				<div class="font-small">
-					TSG LIVE! 4 オープニングトーク特別企画
+					TSG LIVE! 5 オープニングトーク特別企画
 				</div>
 				<div class="bold font-xxlarge">
 					たほいや
