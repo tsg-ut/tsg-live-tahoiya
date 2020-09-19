@@ -39,7 +39,7 @@ export default {
 	},
 	computed: {
 		...mapState({
-			themes: (state) => state.tsgliveTahoiyaThemes.list.slice().sort((a, b) => a.date.seconds - b.date.seconds),
+			themes: (state) => state.tsgliveTahoiyaThemes.list.slice().sort((a, b) => parseInt(a.date - b.date)),
 		}),
 	},
 	mounted() {
